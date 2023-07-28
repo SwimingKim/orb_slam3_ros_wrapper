@@ -71,9 +71,13 @@ int main(int argc, char **argv)
     // Stop all threads
     SLAM.Shutdown();
 
+    std::string keyframe_trajectory, camera_trajectory;
+    node_handler.param<std::string>(node_name + "/keyframe_trajectory_path", keyframe_trajectory, "file_not_set");
+    node_handler.param<std::string>(node_name + "/camera_trajectory_path", camera_trajectory, "file_not_set");
+
     // Save camera trajectory
-    SLAM.SaveKeyFrameTrajectoryTUM("/home/ubuntu/Documents/dev/ORB_SLAM3/KeyFrameTrajectory_ros.txt");
-    SLAM.SaveTrajectoryKITTI("/home/ubuntu/Documents/dev/ORB_SLAM3/CameraTrajectory_ros.txt");
+    SLAM.SaveKeyFrameTrajectoryTUM(keyframe_trajectory);
+    SLAM.SaveTrajectoryKITTI(camera_trajectory);
 
     ros::shutdown();
 
