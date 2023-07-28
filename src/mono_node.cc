@@ -13,7 +13,7 @@ class ImageGrabber
 public:
     ImageGrabber(ORB_SLAM3::System* pSLAM):mpSLAM(pSLAM){}
 
-    void GrabImage(const sensor_msgs::ImageConstPtr& msg);
+    void GrabImage(const sensor_msgs::Image& msg);
 
     ORB_SLAM3::System* mpSLAM;
 };
@@ -71,30 +71,45 @@ int main(int argc, char **argv)
     // Stop all threads
     SLAM.Shutdown();
 
+    std::string keyframe_trajectory, camera_trajectory;
+    node_handler.param<std::string>(node_name + "/keyframe_trajectory_path", keyframe_trajectory, "file_not_set");
+    node_handler.param<std::string>(node_name + "/camera_trajectory_path", camera_trajectory, "file_not_set");
+
+    // Save camera trajectory
+    SLAM.SaveKeyFrameTrajectoryTUM(keyframe_trajectory);
+    SLAM.SaveTrajectoryKITTI(camera_trajectory);
+
     ros::shutdown();
 
     return 0;
 }
 
-void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
+void ImageGrabber::GrabImage(const sensor_msgs::Image& msg)
 {
-    // Copy the ros image message to cv::Mat.
-    cv_bridge::CvImageConstPtr cv_ptr;
-    try
-    {
-        cv_ptr = cv_bridge::toCvShare(msg);
-    }
-    catch (cv_bridge::Exception& e)
-    {
-        ROS_ERROR("cv_bridge exception: %s", e.what());
-        return;
-    }
+    // // Copy the ros image message to cv::Mat.
+    // cv_bridge::CvImageConstPtr cv_ptr;
+    // try
+    // {
+    //     cv_ptr = cv_bridge::toCvShare(msg);
+    // }
+    // catch (cv_bridge::Exception& e)
+    // {
+    //     ROS_ERROR("cv_bridge exception: %s", e.what());
+    //     return;
+    // }
 
-    // ORB-SLAM3 runs in TrackMonocular()
-    Sophus::SE3f Tcc0 = mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
+    // // ORB-SLAM3 runs in TrackMonocular()
+    // Sophus::SE3f Tcc0 = mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
+
+    cv::Mat src = cv::Mat(msg.height, msg.width, CV_8UC3, const_cast<uint8_t*>(&msg.data[0]), msg.step);
+    cv::cvtColor(src, src, cv::COLOR_RGB2BGR);
+
+    Sophus::SE3f Tcc0 = mpSLAM->TrackMonocular(src, msg.header.stamp.toSec());
+
     Sophus::SE3f Twc = (Tcc0 * Tc0w).inverse();
 
-    ros::Time msg_time = msg->header.stamp;
+    ros::Time msg_time = msg.header.stamp;
+    // ros::Time msg_time = msg->header.stamp;
 
     publish_ros_camera_pose(Twc, msg_time);
     publish_ros_tf_transform(Twc, world_frame_id, cam_frame_id, msg_time);
