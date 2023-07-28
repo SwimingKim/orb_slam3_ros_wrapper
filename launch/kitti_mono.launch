@@ -1,10 +1,9 @@
 <launch>
-    <node name="rosbag" pkg="rosbag" type="play" args="/home/ubuntu/Documents/dev/ORB_SLAM3_DATA/image_01.bag --delay=5"/>
 
     <node name="orb_slam3_mono" pkg="orb_slam3_ros_wrapper" type="orb_slam3_ros_wrapper_mono" output="screen">
 
         <!-- Parameters for original ORB-SLAM3 -->
-        <param name="voc_file"      type="string"   value="/home/ubuntu/Documents/dev/ORB_SLAM3/Vocabulary/ORBvoc.txt" />
+        <param name="voc_file"      type="string"   value="$(find orb_slam3_ros_wrapper)/config/ORBvoc.txt" />
         <param name="settings_file" type="string"   value="$(find orb_slam3_ros_wrapper)/config/KITTI/KITTI00.yaml" />
 
         <param name="keyframe_trajectory_path" type="string"   value="$(find orb_slam3_ros_wrapper)/KeyFrameTrajectory.txt" />

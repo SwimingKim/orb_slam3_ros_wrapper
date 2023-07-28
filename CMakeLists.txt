@@ -5,7 +5,8 @@ project(orb_slam3_ros_wrapper)
 set(ORB_SLAM3_DIR
    $ENV{HOME}/Documents/dev/ORB_SLAM3
 )
-message("ORB ${ORB_SLAM3_DIR}")
+file(COPY ${ORB_SLAM3_DIR}/Vocabulary/ORBvoc.txt
+     DESTINATION ${PROJECT_SOURCE_DIR}/config)
 
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++14")
