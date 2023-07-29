@@ -7,6 +7,8 @@ set(ORB_SLAM3_DIR
 )
 file(COPY ${ORB_SLAM3_DIR}/Vocabulary/ORBvoc.txt
      DESTINATION ${PROJECT_SOURCE_DIR}/config)
+file(COPY ${ORB_SLAM3_DIR}/Examples/Monocular/KITTI00-02.yaml
+     DESTINATION ${PROJECT_SOURCE_DIR}/config)
 
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++14")
@@ -16,7 +18,7 @@ find_package (catkin REQUIRED COMPONENTS
    roscpp
    rospy
    std_msgs
-   # cv_bridge
+   cv_bridge
    image_transport
    tf
    sensor_msgs
@@ -24,7 +26,8 @@ find_package (catkin REQUIRED COMPONENTS
 )
 
 # find_package(OpenCV REQUIRED)
-find_package(OpenCV 4.4 EXACT PATHS ${ORB_SLAM3_DIR}/Thirdparty/OpenCV/install/lib/cmake/opencv4)
+find_package(OpenCV 3.4.20 EXACT PATHS /home/ubuntu/Documents/dev/cpp_lib/opencv3/install/share/OpenCV)
+# find_package(OpenCV 4.4 EXACT PATHS ${ORB_SLAM3_DIR}/Thirdparty/OpenCV/install/lib/cmake/opencv4)
 MESSAGE("OPENCV VERSION:")
 MESSAGE(${OpenCV_VERSION})
 
@@ -39,8 +42,8 @@ find_package(Pangolin REQUIRED HINTS ${ORB_SLAM3_DIR}/Thirdparty/Pangolin/instal
 find_package(easy_profiler 2.1.0 EXACT REQUIRED PATHS ${ORB_SLAM3_DIR}/Thirdparty/EasyProfiler/install/lib/cmake/easy_profiler)
 
 catkin_package (
-   CATKIN_DEPENDS roscpp rospy std_msgs image_transport tf sensor_msgs message_runtime
-   # CATKIN_DEPENDS roscpp rospy std_msgs cv_bridge image_transport tf sensor_msgs message_runtime
+   # CATKIN_DEPENDS roscpp rospy std_msgs image_transport tf sensor_msgs message_runtime
+   CATKIN_DEPENDS roscpp rospy std_msgs cv_bridge image_transport tf sensor_msgs message_runtime
    LIBRARIES {PROJECT_NAME}
 )
 
@@ -75,41 +78,41 @@ target_link_libraries(${PROJECT_NAME}_mono
 )
 
 
-# # stereo node
-# add_executable (${PROJECT_NAME}_stereo
-#    src/stereo_node.cc
-#    src/common.cc
-# )
-# target_link_libraries(${PROJECT_NAME}_stereo
-#    ${LIBS}
-# )
+# stereo node
+add_executable (${PROJECT_NAME}_stereo
+   src/stereo_node.cc
+   src/common.cc
+)
+target_link_libraries(${PROJECT_NAME}_stereo
+   ${LIBS}
+)
 
 
-# # mono-inertial node
-# add_executable (${PROJECT_NAME}_mono_inertial
-#    src/mono_inertial_node.cc
-#    src/common.cc
-# )
-# target_link_libraries(${PROJECT_NAME}_mono_inertial
-#    ${LIBS}
-# )
+# mono-inertial node
+add_executable (${PROJECT_NAME}_mono_inertial
+   src/mono_inertial_node.cc
+   src/common.cc
+)
+target_link_libraries(${PROJECT_NAME}_mono_inertial
+   ${LIBS}
+)
 
 
-# # stereo-inertial node
-# add_executable (${PROJECT_NAME}_stereo_inertial
-#    src/stereo_inertial_node.cc
-#    src/common.cc
-# )
-# target_link_libraries(${PROJECT_NAME}_stereo_inertial
-#    ${LIBS}
-# )
+# stereo-inertial node
+add_executable (${PROJECT_NAME}_stereo_inertial
+   src/stereo_inertial_node.cc
+   src/common.cc
+)
+target_link_libraries(${PROJECT_NAME}_stereo_inertial
+   ${LIBS}
+)
 
 
-# # RGB-D node
-# add_executable (${PROJECT_NAME}_rgbd
-#    src/rgbd_node.cc
-#    src/common.cc
-# )
-# target_link_libraries(${PROJECT_NAME}_rgbd
-#    ${LIBS}
-# )
+# RGB-D node
+add_executable (${PROJECT_NAME}_rgbd
+   src/rgbd_node.cc
+   src/common.cc
+)
+target_link_libraries(${PROJECT_NAME}_rgbd
+   ${LIBS}
+)

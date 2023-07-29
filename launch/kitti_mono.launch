@@ -4,7 +4,7 @@
 
         <!-- Parameters for original ORB-SLAM3 -->
         <param name="voc_file"      type="string"   value="$(find orb_slam3_ros_wrapper)/config/ORBvoc.txt" />
-        <param name="settings_file" type="string"   value="$(find orb_slam3_ros_wrapper)/config/KITTI/KITTI00.yaml" />
+        <param name="settings_file" type="string"   value="$(find orb_slam3_ros_wrapper)/config/KITTI00-02.yaml" />
 
         <param name="keyframe_trajectory_path" type="string"   value="$(find orb_slam3_ros_wrapper)/KeyFrameTrajectory.txt" />
         <param name="camera_trajectory_path" type="string"   value="$(find orb_slam3_ros_wrapper)/CameraTrajectory.txt" />
@@ -12,7 +12,7 @@
         <!-- Parameters for ROS -->
         <param name="world_frame_id"    type="string"   value="world" />
         <param name="cam_frame_id"      type="string"   value="camera" />
-        <param name="enable_pangolin"   type="bool"     value="false" />
+        <param name="enable_pangolin"   type="bool"     value="true" />
         
         <!-- World frame orientation -->
         <param name="world_roll"        type="double"   value="1.57079632679" />
