@@ -1,5 +1,7 @@
 <launch>
 
+    <remap from="/camera/image_raw" to="/cam0/image_raw"/>
+
     <include file="$(find orb_slam3_ros_wrapper)/launch/kitti_mono.launch" />
 
     <node name="rosbag" pkg="rosbag" type="play" args="$(env HOME)/Documents/dev/ORB_SLAM3_DATA/image_0.bag --delay=5"/>
