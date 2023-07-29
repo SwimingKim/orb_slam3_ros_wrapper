@@ -26,7 +26,7 @@ find_package (catkin REQUIRED COMPONENTS
 )
 
 # find_package(OpenCV REQUIRED)
-find_package(OpenCV 3.4.20 EXACT PATHS /home/ubuntu/Documents/dev/cpp_lib/opencv3/install/share/OpenCV)
+find_package(OpenCV 3.4.20 EXACT PATHS $ENV{HOME}/Documents/dev/cpp_lib/opencv3/install/share/OpenCV)
 # find_package(OpenCV 4.4 EXACT PATHS ${ORB_SLAM3_DIR}/Thirdparty/OpenCV/install/lib/cmake/opencv4)
 MESSAGE("OPENCV VERSION:")
 MESSAGE(${OpenCV_VERSION})
